@@ -74,9 +74,28 @@ screen.orientation.addEventListener('change', (event) => {
     DOControl_UI.update();
 });
 window.addEventListener('orientationchange', (event) => {
-    console.log(event);
+    // console.log(event);
+    // orientationchange { 
+    //     isTrusted: true,
+    //     eventPhase: 2,
+    //     bubbles: false,
+    //     cancelable: false,
+    //     returnValue: true,
+    //     defaultPrevented: false,
+    //     composed: false,
+    //     currentTarget: null,
+    //     detail: null
+    //     eventPhase: 0
+    //     explicitOriginalTarget: Window http://localhost:3100/
+    //     originalTarget: Window http://localhost:3100/
+    //     srcElement: Window http://localhost:3100/
+    //     target: Window http://localhost:3100/
+    //     timeStamp: 1088374
+    //     type: "orientationchange"
+    //     … 
+    // }
+
     DOControl.onScreen_OrientationChange(event);
-    
     DOControl_UI.update();
 });
 
