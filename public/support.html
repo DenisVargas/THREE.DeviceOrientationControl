@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relevant APIs Support</title>
+
+    <!-- Socials -->
+    <meta property="og:site_name" content="Quick Orientation API Support Test" />
+    <meta property="og:title" content="Quick Orientation API Support Test" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="A simple website. Displays support for Device Orientation Sensors."/>
+    <meta property="og:image" content="/assets/deviceOrientation.jpg"/>
+    <meta property="og:image:width" content="464" />
+    <meta property="og:image:height" content="464" />
+
+    <meta name="twitter:card" content="summary" />
+    <!-- <meta name="twitter:site" content="@davidfigz" />
+    <meta name="twitter:creator" content="@davidfigz" /> -->
+    <meta name="twitter:image:alt" content="A simple website. Displays support for Device Orientation Sensors." />
+    
+    <!-- <meta property="og:url" content="https://glitch-hello-website.glitch.me/" /> -->
+    
+    <meta name="twitter:image" content="/assets/deviceOrientation.jpg" />
+    <meta name="twitter:title" content="Quick Orientation API Support Test" />
+    <meta name="twitter:description" content="A simple website. Displays support for Device Orientation Sensors." />
+    
+    <meta name="description" content="A simple website. Displays support for Device Orientation Sensors.">
+    <meta name="keywords" content="device orientation, orientation api, device orientation api, device orientation sensor">
+    <meta name="author" content="Denis Vargas Rivero">
+    <meta name="robots" content="none">
+<!-- 
+    <meta name="revisit-after" content="3 month">
+    <meta name="language" content="English">
+    <meta name="generator" content="Visual Studio Code">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Quick Orientation API Support Test">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Quick Orientation API Support Test">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="/assets/deviceOrientation.jpg">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Quick Orientation API Support Test">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Quick Orientation API Support Test">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="/assets/deviceOrientation.jpg">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Quick Orientation API Support Test">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Quick Orientation API Support Test">
+    <meta name="msapplication-TileColor" content="#000000"> 
+-->
+
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/support.css">
+</head>
+<body>
+    <div id="debug-apis" class="no-copy">
+        <h1>Orientation API Tests</h1>
+        <p>window.Orientation property is: <span id="windowOrientationSupport"></span></p>
+        <p>screen.Orientation is supported?: <span id="screenOrientationSupport"></span></p>
+        <p>window.DeviceOrientationEvent is supported?: <span id="windowDeviceOrientationEventSupport"></span></p>
+        
+        <p>screen Orientation Type is <span id="SOType">0</span> and its angle is <span id="SOAngle">0</span></p>
+    </div>
+
+    <script type="module">
+        import { APITest_UI } from '/js/APITests.js';
+        const debugUI = new APITest_UI();
+
+        screen.orientation.addEventListener("change", (event) => {
+           debugUI.onChange(event);
+        });
+    </script>
+</body>
+</html>

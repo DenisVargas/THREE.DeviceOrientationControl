@@ -1,0 +1,14 @@
+#debug-apis {
+	position: absolute;
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.supported{
+    color: green;
+
+}
+
+.unsupported{
+    color: red;
+}
