@@ -60,7 +60,15 @@ export class DeviceOrientationControls {
         //screen.orientation.onchange = this.onScreen_OrientationChange;
         //screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
         window.addEventListener('orientationchange', (event) => this.onScreen_OrientationChange(event));
-        window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
+        
+        //Compatibility with IOS
+        DeviceOrientationEvent.requestPermission()
+        .then(response => {
+            if (response == 'granted') {
+                window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
+            }
+        })
+        .catch(console.error)
 
         this.update();
     }
