@@ -49,7 +49,7 @@ export class DeviceOrientationControls {
 
         this.debug = {
             source_screenOrientation: { type: null, angle: null },
-            device_inputs: { alpha: null, beta: null, gamma: null },
+            device_inputs: { alpha: 0, beta: 0, gamma: 0 },
             _src_deviceOrientation: new Euler(),
         };
 
@@ -89,8 +89,11 @@ export class DeviceOrientationControls {
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
      */
     onDevice_OrientationChange(event) {
-        console.log("DeviceOrientationControls::DeviceOrientationChangeEvent::90");
         // console.log(event);
+        if(event.alpha === null || event.beta === null || event.gamma === null) {
+            console.warn("event.alpha, event.beta and event.gamma are null");
+            return;
+        }
         this.debug.device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
         this.deviceOrientation = {
             alpha: (MathUtils.degToRad(event.alpha)).toFixed(6),
