@@ -54,6 +54,7 @@ scene.add(mesh);
 //    console.error(error);
 //});
 
+//TODO: Reimplementar esta parte
 if(window.onorientationchange){
     console.log("window.onorientationchange event is supported");
 }
@@ -70,7 +71,7 @@ screen.orientation.addEventListener('change', (event) => {
     console.log("screen::window::orientationchange::100");
     console.log(event);
     DOControl.onScreen_OrientationChange(event);
-    
+
     DOControl_UI.update();
 });
 window.addEventListener('orientationchange', (event) => {
