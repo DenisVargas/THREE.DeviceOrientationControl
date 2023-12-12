@@ -48,8 +48,8 @@ export class DeviceOrientationControls {
         this.screenOrientation = 0;
 
         this.debug = {
-            source_screenOrientation: { type: null, angle: null },
-            device_inputs: { alpha: 0, beta: 0, gamma: 0 },
+            _source_screenOrientation: { type: null, angle: null },
+            _device_inputs: { alpha: 0, beta: 0, gamma: 0 },
             _src_deviceOrientation: new Euler(),
         };
 
@@ -94,7 +94,7 @@ export class DeviceOrientationControls {
             console.warn("event.alpha, event.beta and event.gamma are null");
             return;
         }
-        this.debug.device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
+        this.debug._device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
         this.deviceOrientation = {
             alpha: (MathUtils.degToRad(event.alpha)).toFixed(6),
             beta: (MathUtils.degToRad(event.beta)).toFixed(6),
@@ -121,7 +121,7 @@ export class DeviceOrientationControls {
             // console.log(screen.orientation.type);
             // console.log(screen.orientation.angle);
 
-            this.debug.source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
+            this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
             return;
         }
 
@@ -150,7 +150,7 @@ export class DeviceOrientationControls {
             if (window.orientation) {
                 //Esta propiedad está deprecada y no debería usarse. Todavia funciona en Firefox.
                 this.screenOrientation = window.orientation === 0 ? 0 : MathUtils.degToRad(window.orientation);
-                this.debug.source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
+                this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
                 return;
             }
 

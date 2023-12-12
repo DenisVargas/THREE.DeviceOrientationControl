@@ -69,7 +69,7 @@ class OrientationControlsUI {
         this.orientationValueElement.innerText = this._deviceOrientationControlObject.screenOrientation;
 
         //Actualizamos el screen Orientation:
-        const debugSRC_screenOrientation = this._deviceOrientationControlObject.debug.source_screenOrientation;
+        const debugSRC_screenOrientation = this._deviceOrientationControlObject.debug._source_screenOrientation;
         this.screenOrientationTypeElement.innerText = debugSRC_screenOrientation.type ? debugSRC_screenOrientation.type : "portrait-primary";
         this.screenOrientationAngleElement.innerText = debugSRC_screenOrientation.angle ? debugSRC_screenOrientation.angle : 0;
 
