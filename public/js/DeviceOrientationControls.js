@@ -63,20 +63,22 @@ export class DeviceOrientationControls {
         
         //Solicitar permiso para acceder a la API de DeviceOrientationEvent
 
-        if(window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-            //Compatibility with IOS
-            DeviceOrientationEvent.requestPermission()
-            .then(response => {
-                if (response == 'granted') {
-                    window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
-                }
-            })
-            .catch(console.error)
-        }
+        if(window.DeviceOrientationEvent){
+            if(window.DeviceOrientationEvent.requestPermission === undefined) {
+                console.info("DeviceOrientationEvent permission request is not necesary");
+                window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
+            }
 
-        if(window.DeviceOrientationEvent && window.DeviceOrientationEvent.requestPermission === undefined) {
-            console.info("DeviceOrientationEvent permission request is not necesary");
-            window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
+            if(typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+                //Compatibility with IOS
+                DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response == 'granted') {
+                        window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
+                    }
+                })
+                .catch(console.error)
+            }
         }
 
         this.update();
@@ -128,16 +130,13 @@ export class DeviceOrientationControls {
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
      */
     onDevice_OrientationChange(event) {
-        console.log(event);
-        if(event.alpha === null || event.beta === null || event.gamma === null) {
-            console.warn("event.alpha, event.beta and event.gamma are null");
+        if(event.alpha === null || event.beta === null || event.gamma === null) { 
+            this.device = { alpha: 0, beta: 0, gamma: 0 };
             return;
         }
-        // this.debug._device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
 
-        this.device.alpha = event.alpha ? MathUtils.degToRad(event.alpha) : 0; // Z
-        this.device.beta  = event.beta  ? MathUtils.degToRad(event.beta)  : 0; // X'
-        this.device.gamma = event.gamma ? MathUtils.degToRad(event.gamma) : 0; // Y''
-        console.log(this.device);
+        this.device.alpha = MathUtils.degToRad(event.alpha); // Z
+        this.device.beta  = MathUtils.degToRad(event.beta) ; // X'
+        this.device.gamma = MathUtils.degToRad(event.gamma); // Y''
     }
 }
