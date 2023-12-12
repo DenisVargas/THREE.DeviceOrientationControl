@@ -84,7 +84,7 @@ export class DeviceOrientationControls {
          */
         // setObjectQuaternion(euler, orient){
         const q0 = new Quaternion();
-        q0.setFromAxisAngle(zee, -orient);
+        q0.setFromAxisAngle(zee, -this.screenOrientation);
         this.object3D.quaternion.setFromEuler(_deviceOrientation);
         this.object3D.quaternion.multiply(q1);
         this.object3D.quaternion.multiply(q0);
