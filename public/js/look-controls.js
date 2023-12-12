@@ -99,12 +99,14 @@ class LookControls {
             //}
         }
         //End of updateMagicWindowOrientation()...
-
+        
         // On mobile, do camera rotation with touch events and sensors.
         this.object3D.rotation.x = this._deviceOrientationDeltaEuler.x + this._mousePitch.rotation.x;
         this.object3D.rotation.y = this._deviceOrientationDeltaEuler.y + this._mouseYaw.rotation.y;
         this.object3D.rotation.z = this._deviceOrientationDeltaEuler.z;
         //End of updateOrientation()...
+        console.log(this.object3D.rotation.x, this.object3D.rotation.y, this.object3D.rotation.z);
+        console.log(this.magicWindowControls.object3D.rotation.x, this.magicWindowControls.object3D.rotation.y, this.magicWindowControls.object3D.rotation.z);
     }
 
     /* -------------------------------------------------------------------------- */
