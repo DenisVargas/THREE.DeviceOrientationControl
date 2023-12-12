@@ -56,8 +56,8 @@ scene.add(mesh);
 //Crear una instancia de nuestro DeviceOrientationControls
 //const deviceControl = new DeviceOrientationControls(mesh);
 const DOControl = new DeviceOrientationControls(camera);
-// const DOControl_UI = new OrientationControlsUI(document.getElementById('debug-values'));
-// DOControl_UI.deviceOrientationControlObject = DOControl;
+const DOControl_UI = new OrientationControlsUI(document.getElementById('debug-values'));
+DOControl_UI.deviceOrientationControlObject = DOControl;
 //const LookControl = new LookControls(camera, DOCCanvas);
 
 //Suscribirse al evento de cambio de orientación de la pantalla
@@ -107,7 +107,7 @@ function render() {
     // mesh.rotation.y += 0.01
 
     DOControl.update();
-    // DOControl_UI.update();
+    DOControl_UI.update();
     // LookControl.update();
 
     if(window.innerWidth != renderer.domElement.width || window.innerHeight != renderer.domElement.height){
