@@ -29,7 +29,7 @@ export class DeviceOrientationControls {
     constructor(object3D) {
         this.object3D = object3D;
         this.object3D.rotation.reorder("YXZ");
-        this.enabled = true;
+        this._enabled = true;
 
         /**
          * @type {DeviceOrientationEvent} - Objeto que contiene información sobre la orientación del dispositivo.
@@ -60,34 +60,29 @@ export class DeviceOrientationControls {
         //screen.orientation.onchange = this.onScreen_OrientationChange;
         //screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
         window.addEventListener('orientationchange', (event) => this.onScreen_OrientationChange(event));
-        
-        if(window.DeviceOrientationEvent){
-            if(window.DeviceOrientationEvent.requestPermission === undefined) {
-                console.info("DeviceOrientationEvent permission request is not necesary");
-                window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
-            }
-            else if(typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-                //Compatibility with iOs 13+ 
-                try {
-                    const permissionState = DeviceOrientationEvent.requestPermission();
-                    if(permissionState === 'granted'){
-                        window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-            else{
-                alert("DeviceOrientationEvent is not supported");
-            }
-        }
+
+        //Must externally ask for support on IOs 13+ devices using enabled property.
 
         this.update();
     }
 
+    get enabled() { this._enabled; }
+    set enabled(value) { 
+        this._enabled = value; 
+        if(this._enabled){
+            //Subscribe to 
+            this._deviceOrientationHandler = (event) => { this.onDevice_OrientationChange(event) };
+            window.addEventListener('deviceorientation', this._deviceOrientationHandler);
+            return;
+        }
+        //Unsubscribe
+        window.removeEventListener('deviceorientation', this._deviceOrientationHandler);
+        //Maybe we should reset the device object?
+    }
+
     update() {
         // console.log("DeviceOrientationControls::update()");
-        if (this.enabled === false) return;
+        if (this._enabled === false) return;
 
         // const alpha = this.deviceOrientation.alpha ? this.deviceOrientation.alpha + this._alphaOffsetAngle : 0; // Z
         // const beta  = this.deviceOrientation.beta  ? this.deviceOrientation.beta  + this._betaOffsetAngle  : 0; // X'

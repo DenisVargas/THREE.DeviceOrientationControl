@@ -5,3 +5,9 @@ canvas {
 #debug-values {
 	position: absolute;
 }
+
+#request{
+    position: absolute;
+    bottom: 0;
+    margin: 20px;
+}
