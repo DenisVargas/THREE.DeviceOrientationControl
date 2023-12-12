@@ -83,7 +83,64 @@ export class DeviceOrientationControls {
     /* -------------------------------------------------------------------------- */
     /*                                   Eventos                                  */
     /* -------------------------------------------------------------------------- */
+    /**
+     * Maneja el evento de cambio en la orientación de la pantalla.
+     * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
+     */
+    onScreen_OrientationChange(event) {
+        console.info(`The orientation event is of type ${event.type}`);
+        // Podemos identificar el tipo de evento que se ha disparado usando el atributo type del objeto event
 
+        if (event.type === "change") {
+            //El evento es de tipo change targetea a screen.orientation por lo que utilizamos screen.orientation.angle para obtener el valor del ángulo de la orientación.
+
+            // Podemos acceder a estos valores utilizando event.target.type y event.target.angle
+            // Necesitamos hacer una pequeña conversion para que equivalga a los valores de window.orientation
+            this.screenOrientation = windowOrientation_map[event.target.angle];
+            //this.screenOrientation = windowOrientation_map[event.target.type]; //Alternativa usando strings.
+            console.log(`Inputs are: ${event.target.angle} degrees. Result is ${this.screenOrientation} radians.`);
+
+            // console.log(screen.orientation);
+            // console.log(screen.orientation.type);
+            // console.log(screen.orientation.angle);
+
+            // this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
+            console.log(`Screen orientation is ${this.screenOrientation} radians.`);
+            return;
+        }
+
+        if (event.type === "orientationchange") {
+            //El evento es de tipo orientationchange targetea a window por lo que utilizamos window.orientation para obtener el valor de la orientación.
+            if (window.orientation) {
+                console.log("window.orientation aviable.");
+                console.log(`Inputs are: ${window.orientation} degrees. Result is ${windowOrientation_map[window.orientation]} radians.`);
+                //Esta propiedad está deprecada y no debería usarse. Todavia funciona en Firefox.
+                this.screenOrientation = window.orientation === 0 ? 0 : MathUtils.degToRad(window.orientation);
+                // this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
+                console.log(`Screen orientation is ${this.screenOrientation} radians.`);
+                return;
+            }
+
+            if (window.orientation === undefined) {
+                //window.orientation no está soportado por el navegador.
+                console.warn("window.orientation is not supported by this browser.");
+
+                //Probamos acceder a screen.orientation.angle
+                if (screen.orientation.angle) {
+                    //Necesitamos hacer una pequeña conversion para que equivalga a los valores de window.orientation
+                    console.log(`Inputs are: ${screen.orientation.angle} degrees. Result is ${windowOrientation_map[screen.orientation.angle]} radians.`);
+                    this.screenOrientation = windowOrientation_map[screen.orientation.angle];
+                    //this.screenOrientation = windowOrientation_map[screen.orientation.type]; //Alternativa usando strings.
+                    console.log(`Screen orientation is ${this.screenOrientation} radians.`);
+                    return;
+                }
+            }
+        }
+
+        //Fallback if all else fails
+        this.screenOrientation = 0;
+        console.log(`Screen orientation is ${this.screenOrientation} radians.`);
+    }
     /**
      * Maneja el evento de cambio en la orientación del dispositivo.
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
@@ -100,75 +157,5 @@ export class DeviceOrientationControls {
             beta: (MathUtils.degToRad(event.beta)).toFixed(6),
             gamma: (MathUtils.degToRad(event.gamma)).toFixed(6)
         };
-    }
-    /**
-     * Maneja el evento de cambio en la orientación de la pantalla.
-     * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
-     */
-    onScreen_OrientationChange(event) {
-        console.info(`The orientation event is of type ${event.type}`);
-        // Podemos identificar el tipo de evento que se ha disparado usando el atributo type del objeto event
-
-        if (event.type === "change") {
-            //El evento es de tipo change targetea a screen.orientation por lo que utilizamos screen.orientation.angle para obtener el valor del ángulo de la orientación.
-
-            // Podemos acceder a estos valores utilizando event.target.type y event.target.angle
-            // Necesitamos hacer una pequeña conversion para que equivalga a los valores de window.orientation
-            this.screenOrientation = windowOrientation_map[event.target.angle];
-            //this.screenOrientation = windowOrientation_map[event.target.type]; //Alternativa usando strings.
-
-            // console.log(screen.orientation);
-            // console.log(screen.orientation.type);
-            // console.log(screen.orientation.angle);
-
-            // this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
-            return;
-        }
-
-        // orientationchange { 
-        //     isTrusted: true,
-        //     eventPhase: 2,
-        //     bubbles: false,
-        //     cancelable: false,
-        //     returnValue: true,
-        //     defaultPrevented: false,
-        //     composed: false,
-        //     currentTarget: null,
-        //     detail: null
-        //     eventPhase: 0
-        //     explicitOriginalTarget: Window http://localhost:3100/
-        //     originalTarget: Window http://localhost:3100/
-        //     srcElement: Window http://localhost:3100/
-        //     target: Window http://localhost:3100/
-        //     timeStamp: 1088374
-        //     type: "orientationchange"
-        //     … 
-        // }
-
-        if (event.type === "orientationchange") {
-            //El evento es de tipo orientationchange targetea a window por lo que utilizamos window.orientation para obtener el valor de la orientación.
-            if (window.orientation) {
-                //Esta propiedad está deprecada y no debería usarse. Todavia funciona en Firefox.
-                this.screenOrientation = window.orientation === 0 ? 0 : MathUtils.degToRad(window.orientation);
-                // this.debug._source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
-                return;
-            }
-
-            if (window.orientation === undefined) {
-                //window.orientation no está soportado por el navegador.
-                console.warn("window.orientation is not supported by this browser.");
-
-                //Probamos acceder a screen.orientation.angle
-                if (screen.orientation.angle) {
-                    //Necesitamos hacer una pequeña conversion para que equivalga a los valores de window.orientation
-                    this.screenOrientation = windowOrientation_map[screen.orientation.angle];
-                    //this.screenOrientation = windowOrientation_map[screen.orientation.type]; //Alternativa usando strings.
-                    return;
-                }
-            }
-        }
-
-        //Fallback if all else fails
-        this.screenOrientation = 0;
     }
 }
