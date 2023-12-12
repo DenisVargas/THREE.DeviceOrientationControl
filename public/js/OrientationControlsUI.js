@@ -56,9 +56,9 @@ class OrientationControlsUI {
         //Mostramos el panel deviceOrientationControlValuesElement quitando la clase hidden
         this.deviceOrientationControlValuesElement.classList.remove("hidden");
 
-        this.alphaElement.innerText = this._deviceOrientationControlObject.deviceOrientation?.alpha;
-        this.betaElement.innerText = this._deviceOrientationControlObject.deviceOrientation?.beta;
-        this.gammaElement.innerText = this._deviceOrientationControlObject.deviceOrientation?.gamma;
+        this.alphaElement.innerText = this._deviceOrientationControlObject.device?.alpha;
+        this.betaElement.innerText = this._deviceOrientationControlObject.device?.beta;
+        this.gammaElement.innerText = this._deviceOrientationControlObject.device?.gamma;
         this.orientationValueElement.innerText = this._deviceOrientationControlObject.screenOrientation;
 
         //Actualizamos el screen Orientation:

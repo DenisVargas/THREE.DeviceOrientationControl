@@ -38,7 +38,7 @@ export class DeviceOrientationControls {
          * @property {number} gamma - Valor predeterminado para gamma (0 por defecto).
          * @see https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent
          */
-        this.deviceOrientation = {
+        this.device = {
             alpha: 0,
             beta: 0,
             gamma: 0
@@ -59,8 +59,8 @@ export class DeviceOrientationControls {
         // screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
         //screen.orientation.onchange = this.onScreen_OrientationChange;
         //screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
-        window.addEventListener('orientationchange', this.onScreen_OrientationChange);
-        window.addEventListener('deviceorientation', this.onDevice_OrientationChange);
+        window.addEventListener('orientationchange', (event) => this.onScreen_OrientationChange(event));
+        window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
 
         this.update();
     }
@@ -74,7 +74,7 @@ export class DeviceOrientationControls {
         // const gamma = this.deviceOrientation.gamma ? this.deviceOrientation.gamma + this._gammaOffsetAngle : 0; // Y''
 
         const _deviceOrientation = new Euler();
-        _deviceOrientation.set(this.deviceOrientation.beta, this.deviceOrientation.alpha, -this.deviceOrientation.gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
+        _deviceOrientation.set(this.device.beta, this.device.alpha, -this.device.gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
         // this.debug._src_deviceOrientation = _deviceOrientation;
 
         const q0 = new Quaternion();
@@ -111,16 +111,16 @@ export class DeviceOrientationControls {
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
      */
     onDevice_OrientationChange(event) {
-        // console.log(event);
+        console.log(event);
         if(event.alpha === null || event.beta === null || event.gamma === null) {
             console.warn("event.alpha, event.beta and event.gamma are null");
             return;
         }
         // this.debug._device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
-        this.deviceOrientation = {
-            alpha: (MathUtils.degToRad(event.alpha)).toFixed(6),
-            beta: (MathUtils.degToRad(event.beta)).toFixed(6),
-            gamma: (MathUtils.degToRad(event.gamma)).toFixed(6)
-        };
+
+        this.device.alpha = event.alpha ? MathUtils.degToRad(event.alpha) : 0; // Z
+        this.device.beta  = event.beta  ? MathUtils.degToRad(event.beta)  : 0; // X'
+        this.device.gamma = event.gamma ? MathUtils.degToRad(event.gamma) : 0; // Y''
+        console.log(this.device);
     }
 }
