@@ -38,57 +38,17 @@ class LookControls {
         this.hasSavedPose = false;
         this.savedPose = null;
 
-        //Magic Window:
-        this.previousMagicWindowYaw = 0;
-
-        /**
-         * Set up states and Object3Ds needed to store rotation data.
-         */
+        // Set up states and Object3Ds needed to store rotation data.
         this._mouseDown = false;
         this._mousePitch = new Object3D();
         this._mouseYaw = new Object3D();
         this._mouseYaw.position.y = 10;
         this._mouseYaw.add(this._mousePitch);
-
-        //Bind methods to Event Callbacks... Not necesary when using this class.
-        // bindMethods: function () {
-        //     this.onMouseDown = bind(this.onMouseDown, this);
-        //     this.onMouseMove = bind(this.onMouseMove, this);
-        //     this.onMouseUp = bind(this.onMouseUp, this);
-        //     this.onTouchStart = bind(this.onTouchStart, this);
-        //     this.onTouchMove = bind(this.onTouchMove, this);
-        //     this.onTouchEnd = bind(this.onTouchEnd, this);
-        //     this.onEnterVR = bind(this.onEnterVR, this);
-        //     this.onExitVR = bind(this.onExitVR, this);
-        //     this.onPointerLockChange = bind(this.onPointerLockChange, this);
-        //     this.onPointerLockError = bind(this.onPointerLockError, this);
-        // },
-
         this.previousMouseEvent = {};
 
         // setupMagicWindowControls();
-        // setupMagicWindowControls() {
-        //     var magicWindowControls;
-        //     var data = this.data;
-
-        //this.magicWindowObject = new Object3D();
         this.magicWindowControls = new DeviceOrientationControls(new Object3D());
-
-        // Only on mobile devices and only enabled if DeviceOrientation permission has been granted.
-        //     if (utils.device.isMobile() || utils.device.isMobileDeviceRequestingDesktopSite()) {
-        //         magicWindowControls = this.magicWindowControls = new DeviceOrientationControls(this.magicWindowObject);
-        //         if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.requestPermission) {
-        //             magicWindowControls.enabled = false;
-        //             if (this.el.sceneEl.components['device-orientation-permission-ui'].permissionGranted) {
-        //                 magicWindowControls.enabled = data.magicWindowTrackingEnabled;
-        //             } else {
-        //                 this.el.sceneEl.addEventListener('deviceorientationpermissiongranted', function () {
-        //                     magicWindowControls.enabled = data.magicWindowTrackingEnabled;
-        //                 });
-        //             }
-        //         }
-        //     }
-        // }
+        this.previousMagicWindowYaw = 0;
 
         // To save / restore camera pose
         this.savedPose = {
@@ -106,28 +66,20 @@ class LookControls {
     /*                                  LifeCicle                                 */
     /* -------------------------------------------------------------------------- */
 
+    /**
+     * Update orientation for mobile, mouse drag, and headset.
+     * Mouse-drag only enabled if HMD is not active.
+     */
     update() {
         if (!this.Enabled) return;
 
-        //this.updateOrientation();
-        /**
-         * Update orientation for mobile, mouse drag, and headset.
-         * Mouse-drag only enabled if HMD is not active.
-         */
-        // updateOrientation() {
-        // const object3D = this.object3D;
-        // var sceneEl = this.el.sceneEl;
         // In VR or AR mode, THREE is in charge of updating the camera pose.
-        // if ((sceneEl.is('vr-mode') || sceneEl.is('ar-mode')) && sceneEl.checkHeadsetConnected()) {
-        //     return;
-        // }
         if(this.XRMode){
             // With WebXR THREE applies headset pose to the object3D internally.
             return;
         }
 
-        // this.updateMagicWindowOrientation();
-        // updateMagicWindowOrientation(){...
+        // updateMagicWindowOrientation();
         const magicWindowAbsoluteEuler = this._deviceOrientationAbsoluteEuler;
         // const magicWindowDeltaEuler = this._deviceOrientationDeltaEuler;
 
@@ -146,13 +98,13 @@ class LookControls {
                 this.previousMagicWindowYaw = magicWindowAbsoluteEuler.y;
             //}
         }
-        //} //End of updateMagicWindowOrientation()...
+        //End of updateMagicWindowOrientation()...
 
         // On mobile, do camera rotation with touch events and sensors.
         this.object3D.rotation.x = this._deviceOrientationDeltaEuler.x + this._mousePitch.rotation.x;
         this.object3D.rotation.y = this._deviceOrientationDeltaEuler.y + this._mouseYaw.rotation.y;
         this.object3D.rotation.z = this._deviceOrientationDeltaEuler.z;
-        // } //End of updateOrientation()...
+        //End of updateOrientation()...
     }
 
     /* -------------------------------------------------------------------------- */
@@ -268,57 +220,6 @@ class LookControls {
     /*                                   Eventos                                  */
     /* -------------------------------------------------------------------------- */
 
-     /**
-     * Toggle the feature of showing/hiding the grab cursor.
-     */
-    // updateGrabCursor(enabled) {
-    //     // var sceneEl = this.el.sceneEl;
-
-    //     function enableGrabCursor() { sceneEl.canvas.classList.add('a-grab-cursor'); }
-    //     function disableGrabCursor() { sceneEl.canvas.classList.remove('a-grab-cursor'); }
-
-    //     if (!sceneEl.canvas) {
-    //         if (enabled) {
-    //             sceneEl.addEventListener('render-target-loaded', enableGrabCursor);
-    //         } else {
-    //             sceneEl.addEventListener('render-target-loaded', disableGrabCursor);
-    //         }
-    //         return;
-    //     }
-
-    //     if (enabled) {
-    //         enableGrabCursor();
-    //         return;
-    //     }
-    //     disableGrabCursor();
-    // }
-
-    /**
-     * Add mouse and touch event listeners to canvas.
-     */
-    // addEventListeners() {
-    //     // Wait for canvas to load.
-    //     // if (!this.canvas) {
-    //     //     this.canvas.addEventListener('render-target-loaded', bind(this.addEventListeners, this));
-    //     //     return;
-    //     // }
-
-    //     // sceneEl events.
-    //     // Nota: Esto parecen ser custom events.
-    //     // this.canvas.addEventListener('enter-vr', this.onEnterVR);
-    //     // this.canvas.addEventListener('exit-vr', this.onExitVR);
-    // }
-
-    /**
-     * Remove mouse and touch event listeners from canvas.
-     */
-    // removeEventListeners() {
-    //     // sceneEl events.
-    //     // TODO: Debe tener paridad con addEventListeners().
-    //     this.canvas.removeEventListener('enter-vr', this.onEnterVR);
-    //     this.canvas.removeEventListener('exit-vr', this.onExitVR);
-    // }
-
     /**
      * Register mouse down to detect mouse drag.
      */
@@ -354,8 +255,6 @@ class LookControls {
         let direction;
         let movementX;
         let movementY;
-        const _mousePitch = this._mousePitch;
-        const _mouseYaw = this._mouseYaw;
         const previousMouseEvent = this.previousMouseEvent;
 
         // Not dragging or not enabled.
@@ -374,7 +273,7 @@ class LookControls {
 
         // Calculate rotation.
         direction = this.reverseMouseDrag ? 1 : -1;
-        _mouseYaw.rotation.y += movementX * 0.002 * direction;
+        this._mouseYaw.rotation.y += movementX * 0.002 * direction;
         this._mousePitch.rotation.x += movementY * 0.002 * direction;
         this._mousePitch.rotation.x = Math.max(-PI_2, Math.min(PI_2, this._mousePitch.rotation.x));
     }

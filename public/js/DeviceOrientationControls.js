@@ -6,10 +6,6 @@ const zee = new Vector3(0, 0, 1);
 // Inside onScreen_OrientationChange() we are supposed to use window.orientation values, but it is now deprecated. {@link https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation}
 // Screen.orientation.type is used instead, available on the window.screen property {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/screen}.
 const windowOrientation_map = {
-    'portrait-primary': 0,
-    'portrait-secondary': 0,
-    'landscape-primary': MathUtils.degToRad(90),
-    'landscape-secondary': MathUtils.degToRad(-90),
     270: MathUtils.degToRad(-90),
     90: MathUtils.degToRad(90),
     0: 0,
@@ -34,13 +30,13 @@ export class DeviceOrientationControls {
         this.object3D.rotation.reorder("YXZ");
         this.enabled = true;
 
-       /**
-        * @type {DeviceOrientationEvent} - Objeto que contiene información sobre la orientación del dispositivo.
-        * @property {number} alpha - Valor predeterminado para alpha (0 por defecto).
-        * @property {number} beta - Valor predeterminado para beta (0 por defecto).
-        * @property {number} gamma - Valor predeterminado para gamma (0 por defecto).
-        * @see https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent
-        */
+        /**
+         * @type {DeviceOrientationEvent} - Objeto que contiene información sobre la orientación del dispositivo.
+         * @property {number} alpha - Valor predeterminado para alpha (0 por defecto).
+         * @property {number} beta - Valor predeterminado para beta (0 por defecto).
+         * @property {number} gamma - Valor predeterminado para gamma (0 por defecto).
+         * @see https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent
+         */
         this.deviceOrientation = {
             alpha: 0,
             beta: 0,
@@ -56,6 +52,11 @@ export class DeviceOrientationControls {
             device_inputs: { alpha: null, beta: null, gamma: null },
             _src_deviceOrientation: new Euler(),
         };
+
+        // Añadir eventos
+        screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
+        window.addEventListener('orientationchange', this.onScreen_OrientationChange);
+        window.addEventListener('deviceorientation', this.onDevice_OrientationChange);
 
         this.update();
     }
@@ -131,6 +132,26 @@ export class DeviceOrientationControls {
             this.debug.source_screenOrientation = { type: screen.orientation.type, angle: screen.orientation.angle };
             return;
         }
+
+        // orientationchange { 
+        //     isTrusted: true,
+        //     eventPhase: 2,
+        //     bubbles: false,
+        //     cancelable: false,
+        //     returnValue: true,
+        //     defaultPrevented: false,
+        //     composed: false,
+        //     currentTarget: null,
+        //     detail: null
+        //     eventPhase: 0
+        //     explicitOriginalTarget: Window http://localhost:3100/
+        //     originalTarget: Window http://localhost:3100/
+        //     srcElement: Window http://localhost:3100/
+        //     target: Window http://localhost:3100/
+        //     timeStamp: 1088374
+        //     type: "orientationchange"
+        //     … 
+        // }
 
         if (event.type === "orientationchange") {
             //El evento es de tipo orientationchange targetea a window por lo que utilizamos window.orientation para obtener el valor de la orientación.

@@ -1,8 +1,7 @@
 import { WebGLRenderer, PerspectiveCamera, Scene, BoxGeometry, MeshBasicMaterial, Mesh, AmbientLight, PointLight } from './three.module.js';
 import { DeviceOrientationControls } from './DeviceOrientationControls.js';
 import { OrientationControlsUI } from './OrientationControlsUI.js';
-
-const DOControl_UI = new OrientationControlsUI(document.getElementById('debug-values'));
+import { LookControls } from './look-controls.js';
 
 const _doc_canvas = document.getElementById('three-scene');
 //si doc_canvas es null, no se puede hacer nada asi que tiramos un error:
@@ -64,50 +63,45 @@ if(screen.orientation.onchange){
 
 //Crear una instancia de nuestro DeviceOrientationControls
 //const deviceControl = new DeviceOrientationControls(mesh);
-const DOControl = new DeviceOrientationControls(camera);
+// const DOControl = new DeviceOrientationControls(camera);
+// const DOControl_UI = new OrientationControlsUI(document.getElementById('debug-values'));
+// DOControl_UI.deviceOrientationControlObject = DOControl;
+const LookControl = new LookControls(camera, _doc_canvas);
 
 //Suscribirse al evento de cambio de orientación de la pantalla
-screen.orientation.addEventListener('change', (event) => {
-    console.log("screen::window::orientationchange::100");
-    console.log(event);
-    DOControl.onScreen_OrientationChange(event);
+// screen.orientation.addEventListener('change', (event) => {
+//     console.log(event);
+//     DOControl_UI.update();
+// });
+// window.addEventListener('orientationchange', (event) => {
+//     // orientationchange { 
+//     //     isTrusted: true,
+//     //     eventPhase: 2,
+//     //     bubbles: false,
+//     //     cancelable: false,
+//     //     returnValue: true,
+//     //     defaultPrevented: false,
+//     //     composed: false,
+//     //     currentTarget: null,
+//     //     detail: null
+//     //     eventPhase: 0
+//     //     explicitOriginalTarget: Window http://localhost:3100/
+//     //     originalTarget: Window http://localhost:3100/
+//     //     srcElement: Window http://localhost:3100/
+//     //     target: Window http://localhost:3100/
+//     //     timeStamp: 1088374
+//     //     type: "orientationchange"
+//     //     … 
+//     // }
 
-    DOControl_UI.update();
-});
-window.addEventListener('orientationchange', (event) => {
-    // console.log(event);
-    // orientationchange { 
-    //     isTrusted: true,
-    //     eventPhase: 2,
-    //     bubbles: false,
-    //     cancelable: false,
-    //     returnValue: true,
-    //     defaultPrevented: false,
-    //     composed: false,
-    //     currentTarget: null,
-    //     detail: null
-    //     eventPhase: 0
-    //     explicitOriginalTarget: Window http://localhost:3100/
-    //     originalTarget: Window http://localhost:3100/
-    //     srcElement: Window http://localhost:3100/
-    //     target: Window http://localhost:3100/
-    //     timeStamp: 1088374
-    //     type: "orientationchange"
-    //     … 
-    // }
+//     DOControl_UI.update();
+// });
 
-    DOControl.onScreen_OrientationChange(event);
-    DOControl_UI.update();
-});
-
-//Suscribirse al evento de cambio de orientación del dispositivo
-window.addEventListener('deviceorientation', (event) => {
-    console.log("OrientationChangeEvent::window::deviceorientation::107");
-    // console.log(event);
-    DOControl.onDevice_OrientationChange(event);
-    
-    DOControl_UI.update();
-});
+// //Suscribirse al evento de cambio de orientación del dispositivo
+// window.addEventListener('deviceorientation', (event) => {
+//     console.log(event);
+//     DOControl_UI.update();
+// });
 
 function resize(){
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -116,15 +110,13 @@ function resize(){
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-//Modificamos la instancia de DOA_tests para que tenga una referencia a nuestro deviceControl
-DOControl_UI.deviceOrientationControlObject = DOControl;
-
 function render() {
     // mesh.rotation.x += 0.01
     // mesh.rotation.y += 0.01
 
-    DOControl.update();
-    //DOControl_UI.update();
+    // DOControl.update();
+    // DOControl_UI.update();
+    LookControl.update();
 
     if(window.innerWidth != renderer.domElement.width || window.innerHeight != renderer.domElement.height){
         resize();
