@@ -41,7 +41,8 @@ scene.add(point1);
 var geometry = new BoxGeometry(10, 10, 10);
 var material = new MeshBasicMaterial({ color: '#ffff' });
 var mesh = new Mesh(geometry, material);
-mesh.position.set(0, 0, -100);
+//Y es vertical, X es profundidad, Z es horizontal
+mesh.position.set(-100, 0, 0);
 
 scene.add(mesh);
 
