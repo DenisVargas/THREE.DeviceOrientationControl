@@ -73,22 +73,11 @@ export class DeviceOrientationControls {
         _deviceOrientation.set(this.deviceOrientation.beta, this.deviceOrientation.alpha, -this.deviceOrientation.gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
         this.debug._src_deviceOrientation = _deviceOrientation;
 
-        // this.setObjectQuaternion(
-        //     computed_euler,
-        //     this.screenOrientation
-        // );
-        /**
-         * Método para establecer un quaternion en base a valores de ángulos y orientación.
-         * @param {Euler} euler - Instancia de THREE.Euler que contiene los valores alpha, beta y gamma procesados.
-         * @param {number} orient - Orientación.
-         */
-        // setObjectQuaternion(euler, orient){
         const q0 = new Quaternion();
         q0.setFromAxisAngle(zee, -this.screenOrientation);
         this.object3D.quaternion.setFromEuler(_deviceOrientation);
         this.object3D.quaternion.multiply(q1);
         this.object3D.quaternion.multiply(q0);
-        // };
     }
 
     /* -------------------------------------------------------------------------- */
@@ -100,7 +89,7 @@ export class DeviceOrientationControls {
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
      */
     onDevice_OrientationChange(event) {
-        // console.log("DeviceOrientationControls::DeviceOrientationChangeEvent::90");
+        console.log("DeviceOrientationControls::DeviceOrientationChangeEvent::90");
         // console.log(event);
         this.debug.device_inputs = { alpha: event.alpha, beta: event.beta, gamma: event.gamma };
         this.deviceOrientation = {
@@ -114,7 +103,7 @@ export class DeviceOrientationControls {
      * @param {Event} event - Objeto de tipo Event que contiene información sobre el evento.
      */
     onScreen_OrientationChange(event) {
-        // console.info(`The orientation event is of type ${event.type}`);
+        console.info(`The orientation event is of type ${event.type}`);
         // Podemos identificar el tipo de evento que se ha disparado usando el atributo type del objeto event
 
         if (event.type === "change") {
