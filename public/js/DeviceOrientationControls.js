@@ -61,23 +61,24 @@ export class DeviceOrientationControls {
         //screen.orientation.addEventListener('change', this.onScreen_OrientationChange);
         window.addEventListener('orientationchange', (event) => this.onScreen_OrientationChange(event));
         
-        //Solicitar permiso para acceder a la API de DeviceOrientationEvent
-
         if(window.DeviceOrientationEvent){
             if(window.DeviceOrientationEvent.requestPermission === undefined) {
                 console.info("DeviceOrientationEvent permission request is not necesary");
                 window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
             }
-
-            if(typeof window.DeviceOrientationEvent.requestPermission === 'function') {
-                //Compatibility with IOS
-                DeviceOrientationEvent.requestPermission()
-                .then(response => {
-                    if (response == 'granted') {
+            else if(typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+                //Compatibility with iOs 13+ 
+                try {
+                    const permissionState = DeviceOrientationEvent.requestPermission();
+                    if(permissionState === 'granted'){
                         window.addEventListener('deviceorientation', (event) => this.onDevice_OrientationChange(event));
                     }
-                })
-                .catch(console.error)
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            else{
+                alert("DeviceOrientationEvent is not supported");
             }
         }
 
